@@ -1,0 +1,275 @@
+<!--
+Name: Lovina Delph, lovina_delph@student.uml.edu
+Affiliation: Computer Science - Undergraduate, UMass Lowell 
+Subject: Comp.4610, GUI Programming I 
+File: /usr/cs/2017/ldelph/public_html/assn3.html
+Created: 19/Nov/2017
+Last updated by LD: - 19/Nov/2017
+ -->
+
+<html>
+    <head>
+        <title>Assignment5 </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link rel="stylesheet" href="newcss.css">  
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+          <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+      </head>
+   <body>
+       <!--This is the body of the application -->
+     <form id="myform">
+       <div class="container-fluid text-center">
+           <div class="row content">
+      <div class="col-sm-8 text-left">
+          <h1> Compare Car Costs! </h1>
+          <h6> Make the best choice when buying your car. </h6>
+           <hr>
+            <input id="btnAdd" type="button" value="Click to add MSRP Values" />
+           <br>
+          <br/>
+        <!--This is the div where the MSRP value text fields are created -->  
+      <div id="TextBoxContainer">
+        </div>
+          <br>
+           <input id="btnAdd1" type="button" value="Click to add MPG Values" />
+           <br>
+            <br/>
+          <!--This is the div where the MPG value text fields are created -->  
+        <div id="TextBoxContainer1">
+        </div>
+      </div>
+      <br>
+       
+       <!--This is the additional information text fields for the form is created -->  
+      <div class="col-sm-8 text-left">
+          <div class="well">
+              
+            <label>Gas: </label>
+             <input type ="number" id="gasvalue" name="gasvalue"> <br>
+          
+            <label>Months:</label>
+             <input type ="number" id="month_value" name="months"><br>
+          
+            <label>Down Payment: </label>
+            <input type ="number" id="down_payment" name="downpayment"> <br>
+          
+            <label>Interest: </label>
+            <input type ="number" id="interest_value" name="interest"> <br>
+          
+            <label>Miles driven per year: </label>
+            <input type ="number" id="mp_year" name="miles"> <br>
+          
+           <label>Rebate: </label>
+            <input type ="number" id="add_discounts" name="rebate" > <br> <br>
+          
+         Click me first! <input id="btnGet" type="submit" value="Submit" /> 
+         <br> <br>
+         Then me! <input type="button" id = "btnGenerate" value="Generate Table" />
+      <hr />
+         </div>
+       </div>    
+      </div>
+    </div>
+  </form>
+ <script> 
+     
+   //JQuery validation  
+   jQuery.validator.setDefaults({
+     debug: true,
+     success: "valid"
+    });
+
+   $("#myform").validate({
+     rules: {
+       DynamicTextBox1: "required",
+       DynamicTextBox2: "required",
+     gasvalue: {
+      required: true,
+      min: 1
+      },
+     months: {
+      required: true,
+      min: 1
+      },
+     downpayment:{
+      required:true,
+      min: 1
+     },
+     interest: {
+      required:true,
+      min:1
+     },
+     miles: {
+      required:true,
+      min:1000
+     },
+     rebate: {
+      required:true,
+      min:0
+      }
+    
+     },
+    messages: {
+       gasvalue: {
+        required: "Please enter the price of gas in your state",
+        min: "Your value must be greater than zero"
+       },
+       months: {
+        required: "Please enter the months",
+        min: "Your value must be greater than zero"
+       },
+       downpayment: {
+        required: "Please enter your downpayment value",
+        min: "Please enter a value greate rthan zero"
+       },
+       interest:{
+        required: "Please enter a value for interest",
+        min:"Please enter a value that is greater than zero"
+       }, 
+       miles: {
+        required: "Please enter a value for miles",
+        min:"Please enter a value greater than a 1000"
+       },
+       rebate: {
+        required: "Please enter a value for rebate",
+        min:"Invalid input"
+    }
+    
+    }
+  
+});
+//This function gets the value submitted by user
+ $(function () {
+     
+     
+     var arr = [];
+     var arr2 = []; 
+     var cpm =[];
+     var cpmonth = [];
+     var i = 0;
+     
+     
+    $("#btnAdd").bind("click", function () {
+        var div = $("<div />");
+        div.html(GetDynamicTextBox1(""));
+        $("#TextBoxContainer").append(div);
+     });
+    
+     $("#btnAdd1").bind("click", function () {
+        var div = $("<div />");
+        div.html(GetDynamicTextBox2(""));
+        $("#TextBoxContainer1").append(div);
+     });
+
+     $("#btnGet").bind("click", function () {
+        var values = "";
+        var values2 = "";
+        
+     $("input[name=DynamicTextBox1]").each(function () {
+            values += $(this).val() + "\n";
+            arr.push($(this).val());
+       });
+        
+     $("input[name=DynamicTextBox2]").each(function () {
+            values2 += $(this).val() + "\n";
+            arr2.push($(this).val());
+       });
+
+       
+             
+      var a = document.getElementById("gasvalue").value;
+       
+      var b = document.getElementById("month_value").value;
+
+      var c = document.getElementById("down_payment").value;
+       
+      var d = document.getElementById("interest_value").value;
+       
+      var e = document.getElementById("mp_year").value;
+       
+      var f = document.getElementById("add_discounts").value;
+       
+        
+       var x = new Array(arr.length);
+        for (var i =0; i < arr.length;i++ ) {
+            x[i] = new Array(arr2.length);
+        }
+        
+        function someFunction(arr, arr2) {   
+         for(var i = 0; i < arr.length; i++){
+            for(var j = 0; j < arr2.length; j++){
+                
+               var msrp = arr[i];
+               var mpg = arr2[j];
+                
+               var msrp = (msrp - f);
+               var down_payment = msrp *( c * 0.01);
+               var af_dp = msrp - down_payment;
+               
+               var cost_per_month = ((d*0.01/12) *af_dp)/(1-Math.pow(1 + d*0.01/12), -(b));
+               var cpmonth = cost_per_month + e/12/mpg * a;
+               var total_cost = cost_per_month * b;
+               var cpm = total_cost/e + a/mpg;
+               
+               cpm = cpm.toFixed(2);
+               cpmonth = cpmonth.toFixed(2); 
+               x[i][j] = "Cost per mile = " + cpm + ", " + "Cost per month = " + cpmonth;
+
+            }
+       }
+         return x; 
+           
+    }
+//This function generates the dynamic table
+$("#btnGenerate").click(function () {
+   
+    var color_td;
+    document.write("<table border='1px'>");
+    var temp_x = someFunction(arr,arr2); 
+        for(var i = 0; i < arr.length; i++){
+            document.write("<tr style='height:100px;'>");
+            document.write();
+               for(var j = 0; j < arr2.length; j++) {
+                    
+                 document.write("<td style='width:100px;background-color:" + color_td + "'>" + temp_x[i][j] +
+                    "</td>");
+                }
+                document.write("</tr>");
+            }
+            document.write("</table>");
+    });
+  });
+    $("body").on("click", ".remove", function () {
+        $(this).closest("div").remove();
+    });
+   
+});
+function GetDynamicTextBox1(value) {
+  
+    return '<input name = "DynamicTextBox1" type="number" value = "' + value + '" />' + " "+
+            '<input type="button" value="Remove" class="remove" />';
+
+    
+}
+
+
+function GetDynamicTextBox2(value) {
+    
+     return '<input name = "DynamicTextBox2" type="number" value = "' + value + '" />' + " "+ 
+            '<input type="button" value="Remove" class="remove" />';
+    
+      
+};
+
+  </script>
+  
+  
+  
+    </body>
+</html>
